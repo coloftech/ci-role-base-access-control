@@ -54,7 +54,14 @@ class Permission extends CI_Model
      */
     public function add($data)
     {
-        return $this->db->insert('permissions', $data);
+       
+         if ($this->db->get_where("permissions",array('name'=>$data['name']))->num_rows()) {
+            # code...
+            return false;
+        }
+       $this->db->insert("permissions", $data);
+        return $this->db->insert_id();
+        
     }
 
     /**
