@@ -56,7 +56,8 @@ class User extends CI_Model
     {
         $data["password"] = password_hash($data["password"], PASSWORD_BCRYPT);
 
-        return $this->db->insert('users', $data);
+         $this->db->insert("users", $data); 
+         return $this->db->insert_id();  /* return last inserted user id for me to automatically authenticate the new user to the default permisson e.g subscriber */
     }
 
     /**
@@ -83,6 +84,46 @@ class User extends CI_Model
         return $this->find($id) ? $this->db->update('users', $data, array('id' => $id)) : 0;
     }
 
+    /**
+     * Check email. - add new column name it with email
+     *
+     * @param $email
+     * @return mixed
+     */
+
+    public function checkEmail($email)
+    {
+        return $this->db->get_where("users", array("email" => $email))->num_rows();
+    }
+    /**
+     * Check username.
+     *
+     * @param $username
+     * @return mixed
+     */
+    
+    public function checkUsername($username)
+    {
+        return $this->db->get_where("users", array("username" => $username))->num_rows();
+    }
+/**
+     * Check Name if exist.
+     *
+     * @param $name
+     * @return mixed
+     */
+    
+    public function checkName($name)
+    {
+        return $this->db->get_where("users", array("name" => $name))->num_rows();
+    }
+    /**
+     * Insert roles.
+     *
+     * @param $user_id
+     * @param $roles
+     * @return int
+     */
     /**
      * Insert roles.
      *
